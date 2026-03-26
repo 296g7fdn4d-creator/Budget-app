@@ -1,0 +1,313 @@
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f6fb;min-height:100vh;padding:16px;color:#1f2937;">
+  <div style="max-width:520px;margin:0 auto;">
+    <div style="background:linear-gradient(135deg,#7c3aed,#ec4899);color:white;padding:20px;border-radius:24px;box-shadow:0 10px 30px rgba(124,58,237,.25);margin-bottom:16px;">
+      <div style="font-size:13px;opacity:.9;">Level 2 Budget App</div>
+      <div style="font-size:28px;font-weight:800;margin-top:4px;">Family Money Hub</div>
+      <div style="font-size:14px;opacity:.95;margin-top:6px;">Track debt, groceries, and personal spending</div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="tabBtn active" onclick="showTab('dashboard', this)">Home</button>
+      <button class="tabBtn" onclick="showTab('debt', this)">Debt</button>
+      <button class="tabBtn" onclick="showTab('groceries', this)">Groceries</button>
+      <button class="tabBtn" onclick="showTab('jess', this)">Jessica</button>
+      <button class="tabBtn" onclick="showTab('chris', this)">Christopher</button>
+    </div>
+
+    <div id="dashboard" class="tab">
+      <div class="card">
+        <h3>Monthly Snapshot</h3>
+        <div class="metricRow">
+          <div class="metric">
+            <div class="metricLabel">Debt Target</div>
+            <div class="metricValue" id="homeDebtTarget">Affirm</div>
+          </div>
+          <div class="metric">
+            <div class="metricLabel">Groceries Left</div>
+            <div class="metricValue" id="homeGroceriesLeft">$850</div>
+          </div>
+        </div>
+        <div class="metricRow">
+          <div class="metric">
+            <div class="metricLabel">Jessica Left</div>
+            <div class="metricValue" id="homeJessLeft">$1,500</div>
+          </div>
+          <div class="metric">
+            <div class="metricLabel">Christopher Left</div>
+            <div class="metricValue" id="homeChrisLeft">$800</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>This Month’s Priorities</h3>
+        <div class="checkItem"><input type="checkbox" id="p1"><label for="p1">Pay all minimums</label></div>
+        <div class="checkItem"><input type="checkbox" id="p2"><label for="p2">Send extra payment to target debt</label></div>
+        <div class="checkItem"><input type="checkbox" id="p3"><label for="p3">Stay near grocery goal</label></div>
+        <div class="checkItem"><input type="checkbox" id="p4"><label for="p4">Check spending once this week</label></div>
+      </div>
+    </div>
+
+    <div id="debt" class="tab" style="display:none;">
+      <div class="card">
+        <h3>Debt Payoff</h3>
+        <label>Current target</label>
+        <select id="debtName" onchange="saveAndRender()">
+          <option>Affirm</option>
+          <option>Capital One</option>
+          <option>Home Depot</option>
+          <option>Chase</option>
+          <option>OneMain</option>
+          <option>SoFi</option>
+          <option>Kia</option>
+          <option>Camper</option>
+        </select>
+
+        <label>Starting balance</label>
+        <input id="debtStart" type="number" placeholder="5134.83" oninput="saveAndRender()">
+
+        <label>Current balance</label>
+        <input id="debtCurrent" type="number" placeholder="4500" oninput="saveAndRender()">
+
+        <label>Extra payment this month</label>
+        <input id="debtExtra" type="number" placeholder="1200" oninput="saveAndRender()">
+
+        <div class="progressWrap">
+          <div class="progressTop">
+            <span>Progress</span>
+            <span id="debtProgressText">0%</span>
+          </div>
+          <div class="progressBar"><div id="debtProgressBar" class="fill purple"></div></div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill">Paid off: <b id="debtPaid">$0</b></div>
+          <div class="pill">Remaining: <b id="debtRemain">$0</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="groceries" class="tab" style="display:none;">
+      <div class="card">
+        <h3>Groceries</h3>
+        <label>Monthly grocery budget</label>
+        <input id="groceryBudget" type="number" value="850" oninput="saveAndRender()">
+
+        <label>Spent so far this month</label>
+        <input id="grocerySpent" type="number" placeholder="0" oninput="saveAndRender()">
+
+        <div class="progressWrap">
+          <div class="progressTop">
+            <span>Monthly grocery progress</span>
+            <span id="groceryProgressText">$0 used</span>
+          </div>
+          <div class="progressBar"><div id="groceryProgressBar" class="fill pink"></div></div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill">Left this month: <b id="groceryLeft">$850</b></div>
+          <div class="pill">Weekly guide: <b id="groceryWeekly">$212.50</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="jess" class="tab" style="display:none;">
+      <div class="card">
+        <h3>Jessica Spending</h3>
+        <label>Monthly budget</label>
+        <input id="jessBudget" type="number" value="1500" oninput="saveAndRender()">
+
+        <label>Spent so far</label>
+        <input id="jessSpent" type="number" placeholder="0" oninput="saveAndRender()">
+
+        <div class="miniGrid">
+          <div class="miniCard">Nails target<br><b>$73</b></div>
+          <div class="miniCard">Hair target<br><b>$100</b></div>
+          <div class="miniCard">Coffee/food<br><b>$300</b></div>
+          <div class="miniCard">Shopping pool<br><b>$650</b></div>
+        </div>
+
+        <div class="progressWrap">
+          <div class="progressTop">
+            <span>Jessica monthly progress</span>
+            <span id="jessProgressText">$0 used</span>
+          </div>
+          <div class="progressBar"><div id="jessProgressBar" class="fill teal"></div></div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill">Left: <b id="jessLeft">$1500</b></div>
+          <div class="pill">Status: <b id="jessStatus">On track</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="chris" class="tab" style="display:none;">
+      <div class="card">
+        <h3>Christopher Spending</h3>
+        <label>Monthly budget</label>
+        <input id="chrisBudget" type="number" value="800" oninput="saveAndRender()">
+
+        <label>Spent so far</label>
+        <input id="chrisSpent" type="number" placeholder="0" oninput="saveAndRender()">
+
+        <div class="progressWrap">
+          <div class="progressTop">
+            <span>Christopher monthly progress</span>
+            <span id="chrisProgressText">$0 used</span>
+          </div>
+          <div class="progressBar"><div id="chrisProgressBar" class="fill orange"></div></div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill">Left: <b id="chrisLeft">$800</b></div>
+          <div class="pill">Status: <b id="chrisStatus">On track</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3>Tools</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="resetApp()">Reset App</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card{background:#fff;border-radius:22px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);margin-bottom:16px}
+  h3{margin:0 0 14px 0;font-size:20px}
+  label{display:block;font-size:13px;font-weight:700;margin:10px 0 6px}
+  input,select{
+    width:100%;box-sizing:border-box;padding:13px 14px;border-radius:14px;border:1px solid #e5e7eb;
+    font-size:16px;background:#fafafa
+  }
+  .tabBtn{
+    border:none;background:#fff;color:#374151;padding:12px 14px;border-radius:14px;font-weight:700;
+    box-shadow:0 4px 12px rgba(15,23,42,.06)
+  }
+  .tabBtn.active{background:#111827;color:#fff}
+  .metricRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .metric{background:#f8fafc;border-radius:16px;padding:14px}
+  .metricLabel{font-size:12px;color:#6b7280}
+  .metricValue{font-size:22px;font-weight:800;margin-top:4px}
+  .progressWrap{margin-top:14px}
+  .progressTop{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:7px}
+  .progressBar{height:14px;background:#eef2f7;border-radius:999px;overflow:hidden}
+  .fill{height:100%;width:0%;border-radius:999px;transition:width .25s ease}
+  .purple{background:linear-gradient(90deg,#8b5cf6,#ec4899)}
+  .pink{background:linear-gradient(90deg,#ec4899,#fb7185)}
+  .teal{background:linear-gradient(90deg,#14b8a6,#22c55e)}
+  .orange{background:linear-gradient(90deg,#f59e0b,#f97316)}
+  .pillRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .pill{background:#f8fafc;border-radius:999px;padding:10px 12px;font-size:14px}
+  .miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .miniCard{background:#f8fafc;border-radius:16px;padding:12px;text-align:center;font-size:14px}
+  .checkItem{display:flex;align-items:center;gap:10px;margin:10px 0}
+  .checkItem input{width:auto}
+</style>
+
+<script>
+  const ids = [
+    'debtName','debtStart','debtCurrent','debtExtra',
+    'groceryBudget','grocerySpent',
+    'jessBudget','jessSpent',
+    'chrisBudget','chrisSpent',
+    'p1','p2','p3','p4'
+  ];
+
+  function showTab(tab, btn){
+    document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
+    document.getElementById(tab).style.display='block';
+    document.querySelectorAll('.tabBtn').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  }
+
+  function num(id){
+    return parseFloat(document.getElementById(id).value) || 0;
+  }
+
+  function currency(n){
+    return '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});
+  }
+
+  function clampPercent(n){
+    return Math.max(0, Math.min(100, n));
+  }
+
+  function saveAndRender(){
+    ids.forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      localStorage.setItem('budget_'+id, el.type === 'checkbox' ? el.checked : el.value);
+    });
+    render();
+  }
+
+  function loadData(){
+    ids.forEach(id=>{
+      const el = document.getElementById(id);
+      const saved = localStorage.getItem('budget_'+id);
+      if(saved !== null){
+        if(el.type === 'checkbox') el.checked = saved === 'true';
+        else el.value = saved;
+      }
+    });
+  }
+
+  function render(){
+    const debtName = document.getElementById('debtName').value || 'Affirm';
+    const debtStart = num('debtStart');
+    const debtCurrent = num('debtCurrent');
+    const groceryBudget = num('groceryBudget');
+    const grocerySpent = num('grocerySpent');
+    const jessBudget = num('jessBudget');
+    const jessSpent = num('jessSpent');
+    const chrisBudget = num('chrisBudget');
+    const chrisSpent = num('chrisSpent');
+
+    const debtPaid = Math.max(debtStart - debtCurrent, 0);
+    const debtPct = debtStart > 0 ? clampPercent((debtPaid / debtStart) * 100) : 0;
+    document.getElementById('debtPaid').innerText = currency(debtPaid);
+    document.getElementById('debtRemain').innerText = currency(debtCurrent);
+    document.getElementById('debtProgressText').innerText = debtPct.toFixed(0) + '%';
+    document.getElementById('debtProgressBar').style.width = debtPct + '%';
+
+    const groceryLeft = groceryBudget - grocerySpent;
+    const groceryPct = groceryBudget > 0 ? clampPercent((grocerySpent / groceryBudget) * 100) : 0;
+    document.getElementById('groceryLeft').innerText = currency(groceryLeft);
+    document.getElementById('groceryWeekly').innerText = currency(groceryBudget / 4);
+    document.getElementById('groceryProgressText').innerText = currency(grocerySpent) + ' used';
+    document.getElementById('groceryProgressBar').style.width = groceryPct + '%';
+
+    const jessLeft = jessBudget - jessSpent;
+    const jessPct = jessBudget > 0 ? clampPercent((jessSpent / jessBudget) * 100) : 0;
+    document.getElementById('jessLeft').innerText = currency(jessLeft);
+    document.getElementById('jessProgressText').innerText = currency(jessSpent) + ' used';
+    document.getElementById('jessProgressBar').style.width = jessPct + '%';
+    document.getElementById('jessStatus').innerText = jessLeft >= 0 ? 'On track' : 'Over budget';
+
+    const chrisLeft = chrisBudget - chrisSpent;
+    const chrisPct = chrisBudget > 0 ? clampPercent((chrisSpent / chrisBudget) * 100) : 0;
+    document.getElementById('chrisLeft').innerText = currency(chrisLeft);
+    document.getElementById('chrisProgressText').innerText = currency(chrisSpent) + ' used';
+    document.getElementById('chrisProgressBar').style.width = chrisPct + '%';
+    document.getElementById('chrisStatus').innerText = chrisLeft >= 0 ? 'On track' : 'Over budget';
+
+    document.getElementById('homeDebtTarget').innerText = debtName;
+    document.getElementById('homeGroceriesLeft').innerText = currency(groceryLeft);
+    document.getElementById('homeJessLeft').innerText = currency(jessLeft);
+    document.getElementById('homeChrisLeft').innerText = currency(chrisLeft);
+  }
+
+  function resetApp(){
+    if(confirm('Reset all saved numbers?')){
+      ids.forEach(id=>localStorage.removeItem('budget_'+id));
+      location.reload();
+    }
+  }
+
+  loadData();
+  render();
+</script>
